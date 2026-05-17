@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report History</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Logo" class="logo-img">
+        </div>
+        <ul class="nav-links">
+            <li>
+                <button class="nav-item" onclick="window.location.href='index.html'" title="Classifier">
+                    <i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item active" title="History">
+                    <i class="bi bi-list-ul" style="font-size: 1.5rem;"></i>
+                </button>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="nav-item" onclick="window.location.href='about.html'" title="About">
+                <i class="bi bi-info-square" style="font-size: 1.5rem;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <div class="content-wrapper">
+            <div class="history-container">
+
+                <div class="history-header">
+                    <div class="history-header-text">
+                        <h1 class="title">Report History</h1>
+                        <p class="subtitle">All disaster reports analyzed by the framework, newest first.</p>
+                    </div>
+                    <button class="clear-btn" onclick="clearHistory()">
+                        <i class="bi bi-trash"></i> Clear History
+                    </button>
+                </div>
+
+                <!-- History table populated by history.js -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Incident Report</th>
+                                <th>Disaster Type</th>
+                                <th>Group Size</th>
+                                <th>Location</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+
+                <p class="table-footer">An AI-Driven Multi-Label Disaster Report Classification Using NLP and Machine Learning with Automated Preprocessing</p>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="history.js"></script>
+</body>
+</html>

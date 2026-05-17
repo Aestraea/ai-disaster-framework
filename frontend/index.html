@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Disaster Classifier</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Logo" class="logo-img">
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <button class="nav-item active" onclick="location.reload()" title="Classifier">
+                    <i class="bi bi-pencil-square input-icon"></i>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item" onclick="window.location.href='history.html'" title="History">
+                    <i class="bi bi-list-ul list-icon"></i>
+                </button>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="nav-item" onclick="window.location.href='about.html'" title="About">
+                <i class="bi bi-info-square" style="font-size: 1.5rem;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <div class="content-wrapper">
+
+            <h1 class="title">
+                An AI-Driven Multi-Label Disaster Report Classification Using NLP and Machine Learning with Automated Preprocessing
+            </h1>
+
+            <div class="divider"></div>
+
+            <p class="subtitle">
+                A framework for analyzing disaster reports using NLP and machine learning to extract structured information from text.
+            </p>
+
+            <!-- Report input field -->
+            <div class="search-wrapper">
+                <input
+                    type="text"
+                    id="inputText"
+                    placeholder="Enter disaster report text for analysis"
+                    class="input-box"
+                    autocomplete="off"
+                />
+                <button class="input-submit-btn" onclick="analyze()">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Loading screen shown during API call -->
+            <div class="loading-screen" id="loading">
+                <div class="loader-content">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Analyzing report</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
