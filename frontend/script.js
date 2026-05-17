@@ -15,9 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Backend API URL hosted on Hugging Face Spaces
-const API_URL = "https://grldchrstn-aidisasterclassifier.hf.space";
-
 // Majority voting to resolve final prediction from three models
 function getMajority(a, b, c) {
     if (a === b || a === c) return a;
@@ -38,7 +35,7 @@ async function analyze() {
     if (loader) loader.style.display = 'flex';
 
     try {
-        const response = await fetch(`${API_URL}/predict`, {
+        const response = await fetch('https://grldchrstn-aidisasterclassifier.hf.space/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: textInput })

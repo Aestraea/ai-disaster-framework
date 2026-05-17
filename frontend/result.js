@@ -33,57 +33,108 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (report) document.getElementById('reportText').innerText = report;
 
-    const dLrPred  = data.disaster.lr.prediction;
-    const dSvmPred = data.disaster.svm.prediction;
+    // --- Disaster Type ---
+    const dLrPred      = data.disaster.lr.prediction;
+    const dSvmPred     = data.disaster.svm.prediction;
+    const dRobertaPred = data.disaster.roberta.prediction;
 
     setModelCard({
-        predId: 'disasterLrPrediction',  confId: 'disasterLrConfidence',
-        barsId: 'disasterLrBars',        iconId: 'disasterLrIcon',
+        predId: 'disasterLrPrediction',      confId: 'disasterLrConfidence',
+        barsId: 'disasterLrBars',            iconId: 'disasterLrIcon',
         prediction: dLrPred, confidence: data.disaster.lr.confidence,
         iconMap: disasterIcons, colorMap: disasterColors
     });
+
     setModelCard({
-        predId: 'disasterSvmPrediction', confId: 'disasterSvmConfidence',
-        barsId: 'disasterSvmBars',       iconId: 'disasterSvmIcon',
+        predId: 'disasterSvmPrediction',     confId: 'disasterSvmConfidence',
+        barsId: 'disasterSvmBars',           iconId: 'disasterSvmIcon',
         prediction: dSvmPred, confidence: data.disaster.svm.confidence,
         iconMap: disasterIcons, colorMap: disasterColors
     });
 
-    setAgreementBadge('disasterAgreement', dLrPred, dSvmPred);
-    document.getElementById('disasterSummary').innerText =
-        `LR: ${dLrPred} · SVM: ${dSvmPred}`;
+    setModelCard({
+        predId: 'disasterRobertaPrediction', confId: 'disasterRobertaConfidence',
+        barsId: 'disasterRobertaBars',       iconId: 'disasterRobertaIcon',
+        prediction: dRobertaPred, confidence: data.disaster.roberta.confidence,
+        iconMap: disasterIcons, colorMap: disasterColors
+    });
 
-    const pLrPred  = data.population.lr.prediction;
-    const pSvmPred = data.population.svm.prediction;
+    setAgreementBadge3('disasterAgreement', dLrPred, dSvmPred, dRobertaPred);
+    document.getElementById('disasterSummary').innerText =
+        `LR: ${dLrPred} · SVM: ${dSvmPred} · RoBERTa: ${dRobertaPred}`;
+
+    // --- Population Group ---
+    const pLrPred      = data.population.lr.prediction;
+    const pSvmPred     = data.population.svm.prediction;
+    const pRobertaPred = data.population.roberta.prediction;
 
     setModelCard({
-        predId: 'populationLrPrediction',  confId: 'populationLrConfidence',
-        barsId: 'populationLrBars',        iconId: null,
+        predId: 'populationLrPrediction',      confId: 'populationLrConfidence',
+        barsId: 'populationLrBars',            iconId: null,
         prediction: pLrPred, confidence: data.population.lr.confidence,
         iconMap: {}, colorMap: populationColors
     });
+
     setModelCard({
-        predId: 'populationSvmPrediction', confId: 'populationSvmConfidence',
-        barsId: 'populationSvmBars',       iconId: null,
+        predId: 'populationSvmPrediction',     confId: 'populationSvmConfidence',
+        barsId: 'populationSvmBars',           iconId: null,
         prediction: pSvmPred, confidence: data.population.svm.confidence,
         iconMap: {}, colorMap: populationColors
     });
 
-    setAgreementBadge('populationAgreement', pLrPred, pSvmPred);
+    setModelCard({
+        predId: 'populationRobertaPrediction', confId: 'populationRobertaConfidence',
+        barsId: 'populationRobertaBars',       iconId: null,
+        prediction: pRobertaPred, confidence: data.population.roberta.confidence,
+        iconMap: {}, colorMap: populationColors
+    });
+
+    setAgreementBadge3('populationAgreement', pLrPred, pSvmPred, pRobertaPred);
     document.getElementById('populationSummary').innerText =
-        `LR: ${pLrPred} · SVM: ${pSvmPred}`;
+        `LR: ${pLrPred} · SVM: ${pSvmPred} · RoBERTa: ${pRobertaPred}`;
+
+    // --- Location ---
+    const location    = data.location || 'Not identified';
+    const nerEntities = data.ner_entities || [];
+
+    document.getElementById('locationPrediction').innerText = location;
+    document.getElementById('locationSummary').innerText =
+        location === 'Not identified' ? 'Not identified' : location;
+
+    // NER entity confidence bars
+    const nerBars = document.getElementById('locationBars');
+    if (nerBars) {
+        nerBars.innerHTML = '';
+        if (nerEntities.length === 0) {
+            nerBars.innerHTML = `<p style="font-size:12px; color:#525357; margin:0;">No entities detected.</p>`;
+        } else {
+            nerEntities
+                .sort((a, b) => b.score - a.score)
+                .forEach(({ type, word, score }) => {
+                    nerBars.innerHTML += `
+                        <div class="conf-row">
+                            <span class="conf-label conf-label-top" style="width:100px;">${type}</span>
+                            <span class="conf-label" style="width:100px; color:#c4c7c5;">${word}</span>
+                            <div class="conf-bar-track">
+                                <div class="conf-bar-fill" style="width:${score}%; background:#4dff88;"></div>
+                            </div>
+                            <span class="conf-score conf-score-top">${score.toFixed(1)}%</span>
+                        </div>`;
+                });
+        }
+    }
 });
 
 // Render a model prediction card with confidence bars
 function setModelCard({ predId, confId, barsId, iconId, prediction, confidence, iconMap, colorMap }) {
     const topConf = confidence[prediction];
     document.getElementById(predId).innerText = prediction;
-    document.getElementById(confId).innerText  = topConf.toFixed(1) + '% Confidence';
+    document.getElementById(confId).innerText = topConf.toFixed(1) + '% Confidence';
 
     if (iconId) {
         const iconEl = document.getElementById(iconId);
         if (iconEl) {
-            iconEl.className  = `bi ${iconMap[prediction] || 'bi-question-circle'}`;
+            iconEl.className   = `bi ${iconMap[prediction] || 'bi-question-circle'}`;
             iconEl.style.color = colorMap[prediction] || '#8b8e94';
         }
     }
@@ -113,16 +164,24 @@ function renderConfidenceBars(containerId, confidenceObj, topPred, colorMap) {
         });
 }
 
-// Show agreement or disagreement badge between two model predictions
-function setAgreementBadge(elementId, pred1, pred2) {
+// Show agreement badge for three model predictions
+function setAgreementBadge3(elementId, pred1, pred2, pred3) {
     const el = document.getElementById(elementId);
     if (!el) return;
-    if (pred1 === pred2) {
-        el.innerText   = '✓ Models agree';
-        el.className   = 'agreement-badge agree';
+    const allAgree    = pred1 === pred2 && pred2 === pred3;
+    const majorityMap = {};
+    [pred1, pred2, pred3].forEach(p => majorityMap[p] = (majorityMap[p] || 0) + 1);
+    const majority = Object.entries(majorityMap).find(([, count]) => count >= 2);
+
+    if (allAgree) {
+        el.innerText = '✓ All models agree';
+        el.className = 'agreement-badge agree';
+    } else if (majority) {
+        el.innerText = `↗ Majority: ${majority[0]}`;
+        el.className = 'agreement-badge majority';
     } else {
-        el.innerText   = '⚠ Models disagree';
-        el.className   = 'agreement-badge disagree';
+        el.innerText = '⚠ Models disagree';
+        el.className = 'agreement-badge disagree';
     }
 }
 

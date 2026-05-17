@@ -68,7 +68,9 @@
                             </div>
                         </button>
                         <div class="section-panel open">
-                            <div class="model-grid">
+                            <div class="model-grid model-grid-3">
+
+                                <!-- LR -->
                                 <div class="model-card">
                                     <div class="model-card-header">
                                         <span class="model-tag">Logistic Regression</span>
@@ -80,6 +82,8 @@
                                     <p id="disasterLrConfidence" class="model-confidence">-- Confidence</p>
                                     <div id="disasterLrBars" class="conf-bars"></div>
                                 </div>
+
+                                <!-- SVM -->
                                 <div class="model-card">
                                     <div class="model-card-header">
                                         <span class="model-tag">Support Vector Machine</span>
@@ -91,6 +95,20 @@
                                     <p id="disasterSvmConfidence" class="model-confidence">-- Confidence</p>
                                     <div id="disasterSvmBars" class="conf-bars"></div>
                                 </div>
+
+                                <!-- RoBERTa -->
+                                <div class="model-card">
+                                    <div class="model-card-header">
+                                        <span class="model-tag">RoBERTa</span>
+                                        <div class="icon-box">
+                                            <i id="disasterRobertaIcon" class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                    </div>
+                                    <h2 id="disasterRobertaPrediction" class="model-prediction">---</h2>
+                                    <p id="disasterRobertaConfidence" class="model-confidence">-- Confidence</p>
+                                    <div id="disasterRobertaBars" class="conf-bars"></div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -110,7 +128,9 @@
                             </div>
                         </button>
                         <div class="section-panel">
-                            <div class="model-grid">
+                            <div class="model-grid model-grid-3">
+
+                                <!-- LR -->
                                 <div class="model-card">
                                     <div class="model-card-header">
                                         <span class="model-tag">Logistic Regression</span>
@@ -122,6 +142,8 @@
                                     <p id="populationLrConfidence" class="model-confidence">-- Confidence</p>
                                     <div id="populationLrBars" class="conf-bars"></div>
                                 </div>
+
+                                <!-- SVM -->
                                 <div class="model-card">
                                     <div class="model-card-header">
                                         <span class="model-tag">Support Vector Machine</span>
@@ -133,15 +155,64 @@
                                     <p id="populationSvmConfidence" class="model-confidence">-- Confidence</p>
                                     <div id="populationSvmBars" class="conf-bars"></div>
                                 </div>
+
+                                <!-- RoBERTa -->
+                                <div class="model-card">
+                                    <div class="model-card-header">
+                                        <span class="model-tag">RoBERTa</span>
+                                        <div class="icon-box">
+                                            <i class="bi bi-people population-icon" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                    </div>
+                                    <h2 id="populationRobertaPrediction" class="model-prediction">---</h2>
+                                    <p id="populationRobertaConfidence" class="model-confidence">-- Confidence</p>
+                                    <div id="populationRobertaBars" class="conf-bars"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LOCATION -->
+                    <div class="section-block" data-open="false">
+                        <button class="section-header" onclick="toggleSection(this)">
+                            <div class="section-header-left">
+                                <div class="section-header-text">
+                                    <span class="section-title">Location</span>
+                                    <span class="section-summary" id="locationSummary">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="section-header-right">
+                                <i class="bi bi-chevron-down section-chevron"></i>
+                            </div>
+                        </button>
+                        <div class="section-panel">
+                            <div class="location-panel-content">
+                                <div class="model-card location-card">
+                                    <div>
+                                        <span class="model-tag">RoBERTa NER</span>
+                                        <h2 id="locationPrediction" class="model-prediction">---</h2>
+                                    </div>
+                                    <div class="icon-box">
+                                        <i class="bi bi-geo-alt" style="font-size: 1.5rem; color: #4dff88;"></i>
+                                    </div>
+                                </div>
+                                <div id="locationBars" class="conf-bars" style="margin-top: 16px;"></div>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <button class="next-btn" onclick="startNew()">
-                    Analyze Another Report
-                </button>
+                <!-- Action buttons -->
+                <div class="btn-row">
+                    <button class="next-btn" onclick="startNew()">
+                        Analyze Another Report
+                    </button>
+                    <button class="next-btn" onclick="window.location.href='breakdown.html'">
+                        Proceed to AI Breakdown
+                    </button>
+                </div>
 
                 <p class="note">
                     <strong>Note:</strong> Results are generated in real-time and are based on trained machine learning models and NLP preprocessing techniques.

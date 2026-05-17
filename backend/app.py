@@ -40,6 +40,7 @@ population_svm        = load_pkl("svm_model_popgroup.pkl")
 
 # Download RoBERTa model folder from HF Dataset and return local path
 def load_roberta_from_dataset(folder_name):
+    """Download RoBERTa model folder from HF Dataset and return local path"""
     local_path = snapshot_download(
         repo_id=DATASET_REPO,
         repo_type="dataset",
@@ -276,6 +277,7 @@ def predict():
     data = request.get_json()
     text = data.get("text", "")
 
+    # Preprocessing breakdown
     preprocessing = preprocess_text(text)
 
     # Disaster Type

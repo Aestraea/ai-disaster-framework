@@ -86,14 +86,15 @@ function renderHistory(data) {
 
     tbody.innerHTML = data.map((row, index) => {
         const models = row.models || {
-            disaster:   { lr: row.disaster, svm: row.disaster },
-            population: { lr: row.group,    svm: row.group }
+            disaster:   { lr: row.disaster, svm: row.disaster, roberta: row.disaster },
+            population: { lr: row.group,    svm: row.group,    roberta: row.group }
         };
 
         const topDisaster = getTopDisaster(row);
-        const dColor = disasterColors[topDisaster] || '#8b8e94';
-        const dIcon  = disasterIcons[topDisaster];
+        const dColor  = disasterColors[topDisaster] || '#8b8e94';
+        const dIcon   = disasterIcons[topDisaster];
         const iconHtml = dIcon ? `<i class="bi ${dIcon}"></i>` : '';
+        const location = row.location || 'Not identified';
 
         return `
         <tr class="history-row" id="row-${index}">
@@ -105,7 +106,7 @@ function renderHistory(data) {
                 </span>
             </td>
             <td><span class="badge ${getBadgeClass(row.group)}">${row.group}</span></td>
-            <td><span class="location-cell">${row.location}</span></td>
+            <td><span class="location-cell">${location}</span></td>
             <td>
                 <button class="expand-btn" onclick="toggleRow(${index})" title="Show model decisions">
                     <i class="bi bi-chevron-down expand-chevron" id="chevron-${index}"></i>
@@ -120,13 +121,27 @@ function renderHistory(data) {
                             <p class="decision-card-title">Disaster Type</p>
                             ${modelDecisionRow('Logistic Regression', models.disaster.lr, disasterColors)}
                             ${modelDecisionRow('Support Vector Machine', models.disaster.svm, disasterColors)}
+                            ${modelDecisionRow('RoBERTa', models.disaster.roberta, disasterColors)}
                         </div>
                         <div class="decision-card">
                             <p class="decision-card-title">Population Group</p>
                             ${modelDecisionRow('Logistic Regression', models.population.lr, populationColors)}
                             ${modelDecisionRow('Support Vector Machine', models.population.svm, populationColors)}
+                            ${modelDecisionRow('RoBERTa', models.population.roberta, populationColors)}
                         </div>
                     </div>
+
+                    <!-- Location banner -->
+                    <div class="decision-location-banner">
+                        <div class="decision-location-icon">
+                            <i class="bi bi-geo-alt" style="font-size:1.2rem; color:#4dff88;"></i>
+                        </div>
+                        <div>
+                            <p class="decision-location-label">RoBERTa NER · Location</p>
+                            <p class="decision-location-value">${location}</p>
+                        </div>
+                    </div>
+
                 </div>
             </td>
         </tr>`;
@@ -151,6 +166,17 @@ async function clearHistory() {
         renderHistory([]);
     }
 }
+
+// Ctrl + Shift + D keyboard shortcut to clear history
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyD') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm('Clear all report history?')) {
+            clearHistory();
+        }
+    }
+});
 
 window.toggleRow = toggleRow;
 window.clearHistory = clearHistory;
